@@ -28,41 +28,22 @@ router.post('/', validateUser, async (req, res, next) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
   try {
-    const newUser = await User.insert(req.body)
+    const newUser = await User.insert(req.body);
 
     res.status(201).json(newUser)
   }
-  catch{next}
+  catch{(next)}
 });
 
-router.put('/:id', validateUserId, validateUser, (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res, next) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
-  // User.findById(req.params.id)
-  //   .then(user => {
-
-  //     if(user) {
-  //     return User.update(req.params.id, req.body)
-  //     }
-  //   })
-  //   .then(data => {
-  //     if (data) {
-  //     return User.findById(req.params.id)
-  //     }
-  //   })
-  //   .then(edit => {
-  //     if (edit) {
-  //     res.json(edit)
-  //     }
-  // })
-  // .catch(err => {
-  //     res.status(500).json({
-  //         message: "The user information could not be modified",
-  //         err: err.message,
-  //         stack: err.stack
-  //     })
-  // })
+  User.update(req.params.id, { name: req.name })
+    .then(update => {
+      res.json(update)
+    })
+    .catch(next)
 })
 
 router.delete('/:id', validateUserId, (req, res) => {
